@@ -68,7 +68,8 @@ private fun foundXshapedMAS(grid: Grid, pos: Position): Boolean {
     return (center == 'A'
             && corners.count { it == 'M' } == 2
             && corners.count { it == 'S' } == 2
-            && corners[0] != corners[3])
+            && corners[0] != corners[3] // check that diagonal is not MAM or SAS
+            )
 }
 
 private fun get(grid: Grid, pos: Position): Char {
