@@ -3,8 +3,6 @@ package day3
 import utils.AOC
 import kotlin.time.measureTimedValue
 
-typealias Instruction = Pair<Int, Int>
-
 fun main() {
     val lines = AOC.getInput(3)
 
@@ -20,28 +18,28 @@ fun main() {
 fun parse(lines: List<String>) = lines.joinToString("")
 
 fun part1(line: String): Int {
-    return findInstructions(line).sumOf { (a, b) -> a * b }
+    return followInstructions(line).sum()
 }
 
 fun part2(line: String): Int {
-    return findEnabledInstructions(line).sumOf { (a, b) -> a * b }
+    return followEnabledInstructions(line).sum()
 }
 
 
-private fun findInstructions(line: String): List<Instruction> {
+private fun followInstructions(line: String): List<Int> {
     return """mul\((\d+),(\d+)\)""".toRegex().findAll(line)
-        .map { Instruction(it.groupValues[1].toInt(), it.groupValues[2].toInt()) }
+        .map { it.groupValues[1].toInt() * it.groupValues[2].toInt() }
         .toList()
 }
 
-private fun findEnabledInstructions(line: String): List<Instruction> {
+private fun followEnabledInstructions(line: String): List<Int> {
     return line.split("don't()") // Split on `don't()`
         .mapIndexed { index, it ->
             // First match is enabled by default, later matches need to find `do()`
             if (index == 0) it
             else it.substringAfter("do()", missingDelimiterValue = "") // Return empty string if `do()` is not found
         }
-        .flatMap { findInstructions(it) }
+        .flatMap { followInstructions(it) }
         .toList()
 }
 
