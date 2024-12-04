@@ -39,7 +39,7 @@ fun part1(grid: Grid): Int {
     return grid.indices.sumOf { r ->
         grid[r].indices.sumOf { c ->
             directions.count { dir ->
-                foundXMAS(grid, r, c, dir)
+                foundXMAS(grid, Position(r, c), dir)
             }
         }
     }
@@ -53,11 +53,9 @@ fun part2(grid: Grid): Int {
     }
 }
 
-
-private fun foundXMAS(grid: Grid, r: Int, c: Int, dir: Position): Boolean {
-    return "XMAS".withIndex().all { (i, char) -> get(grid, Position(r, c) + dir * i) == char }
+private fun foundXMAS(grid: Grid, pos: Position, dir: Position): Boolean {
+    return "XMAS".withIndex().all { (i, char) -> get(grid, pos + dir * i) == char }
 }
-
 
 private fun foundXshapedMAS(grid: Grid, pos: Position): Boolean {
     val center = get(grid, pos)
@@ -74,12 +72,10 @@ private fun foundXshapedMAS(grid: Grid, pos: Position): Boolean {
 }
 
 private fun get(grid: Grid, pos: Position): Char {
+    val (r, c) = pos
     return if (
-        pos.r < 0 || pos.c < 0 ||
-        pos.r >= grid.size || pos.c >= grid[0].size
+        r < 0 || c < 0
+        || r >= grid.size || c >= grid[0].size
     ) '-'
-    else grid[pos.r][pos.c]
+    else grid[r][c]
 }
-
-
-
