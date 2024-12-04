@@ -24,15 +24,24 @@ fun main() {
 
 fun parse(lines: List<String>): Grid = lines.map { it.toList() }
 
+val UP = Position(-1, 0)
+val RIGHT = Position(0, 1)
+val DOWN = Position(1, 0)
+val LEFT = Position(0, -1)
+val UP_LEFT = UP + LEFT
+val UP_RIGHT = UP + RIGHT
+val DOWN_RIGHT = DOWN + RIGHT
+val DOWN_LEFT = DOWN + LEFT
+
 val directions = listOf(
-    Position(1, 0),   // Right
-    Position(1, 1),   // Down right
-    Position(0, 1),   // Down
-    Position(-1, 1),  // Down left
-    Position(-1, 0),  // Left
-    Position(-1, -1), // Up left
-    Position(0, -1),  // Up
-    Position(1, -1),  // Up right
+    UP_LEFT,
+    UP,
+    UP_RIGHT,
+    RIGHT,
+    DOWN_RIGHT,
+    DOWN,
+    DOWN_LEFT,
+    LEFT,
 )
 
 fun part1(grid: Grid): Int {
@@ -60,15 +69,15 @@ private fun foundXMAS(grid: Grid, pos: Position, dir: Position): Boolean {
 private fun foundXshapedMAS(grid: Grid, pos: Position): Boolean {
     val center = get(grid, pos)
     val corners = listOf(
-        get(grid, pos + Position(-1, -1)),
-        get(grid, pos + Position(-1, 1)),
-        get(grid, pos + Position(1, -1)),
-        get(grid, pos + Position(1, 1)),
+        get(grid, pos + UP_LEFT), // diagonal 1: up left to down right
+        get(grid, pos + DOWN_RIGHT),
+        get(grid, pos + UP_RIGHT), // diagonal 2: up right to down left
+        get(grid, pos + DOWN_LEFT),
     )
     return (center == 'A'
             && corners.count { it == 'M' } == 2
             && corners.count { it == 'S' } == 2
-            && corners[0] != corners[3] // check that diagonal is not MAM or SAS
+            && corners[0] != corners[1] // check that diagonal is not MAM or SAS
             )
 }
 
