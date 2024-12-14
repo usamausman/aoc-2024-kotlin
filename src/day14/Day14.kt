@@ -60,11 +60,19 @@ fun part2(input: Input): Int {
 }
 
 private fun hasNeighbours(robots: List<Position>): Boolean {
-    val pos = robots.toSet()
+    val positions = robots.toSet()
     // Check 3x3 around each position
-    pos.forEach { p ->
-        val neighbors = (-1..1).flatMap { r -> (-1..1).map { c -> p + Position(r, c) } }
-        if (neighbors.all { pos.contains(it) }) return true
+    positions.forEach { p ->
+        if (
+            positions.contains(p + Position(-1, -1)) &&
+            positions.contains(p + Position(-1, 0)) &&
+            positions.contains(p + Position(-1, 1)) &&
+            positions.contains(p + Position(0, -1)) &&
+            positions.contains(p + Position(0, 1)) &&
+            positions.contains(p + Position(1, -1)) &&
+            positions.contains(p + Position(1, 0)) &&
+            positions.contains(p + Position(1, 1))
+        ) return true
     }
     return false
 }
