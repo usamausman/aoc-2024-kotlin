@@ -12,6 +12,8 @@ class AOC {
 
 data class Position(val r: Int, val c: Int) {
     operator fun plus(dir: Direction) = Position(r + dir.r, c + dir.c)
+    operator fun plus(pos: Position) = Position(r + pos.r, c + pos.c)
+    operator fun times(n: Int) = Position(r * n, c * n)
 }
 
 enum class Direction(val r: Int, val c: Int) {
